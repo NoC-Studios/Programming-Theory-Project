@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/NoC_Studios/GeoPhysX/Scenes/SettingsScreen.unity
     guid: ddfe2b4458baa384b94973b982d83fa0
+  - enabled: 1
+    path: Assets/NoC_Studios/GeoPhysX/Scenes/GeoPhysXGameScreen.unity
+    guid: e155d8f4afd380a49befb883759d9ea9
   m_configObjects: {}

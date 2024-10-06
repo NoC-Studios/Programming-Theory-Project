@@ -24,6 +24,9 @@ namespace NoC.Studios.GeoPhysX
         /// </remarks>
         void Start()
         {
+            Button playGameButton = GameObject.Find(GameManager.k_playGameButton).GetComponent<Button>();
+            playGameButton.onClick.AddListener(GameManager.Instance.StartGame);
+            
             Button settingsMenuButton = GameObject.Find(GameManager.k_settingsButtonName).GetComponent<Button>();
             settingsMenuButton.onClick.AddListener(GameManager.Instance.LoadSettingsScreen);
 

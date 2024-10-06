@@ -8,12 +8,27 @@ using UnityEngine.SceneManagement;
 
 namespace NoC.Studios.GeoPhysX
 {
+    /// <summary>
+    /// The GameManager class is responsible for managing the overall state and
+    /// flow of the game, including transitioning between scenes, setting volume levels,
+    /// and handling game startup and quitting.
+    /// </summary>
     public class GameManager : MonoBehaviour
     {
         /// <summary>
         /// Represents the name of the UI element that displays the game's version text.
         /// </summary>
         const string k_versionTextName = "VersionText";
+
+        /// <summary>
+        /// Represents the name of the UI button element that navigates the user back to the title screen.
+        /// </summary>
+        public const string k_returnToTitleButtonName = "ReturnToTitleButton";
+
+        /// <summary>
+        /// Represents the name of the UI element that triggers starting the game.
+        /// </summary>
+        public const string k_playGameButton = "PlayButton";
 
         /// <summary>
         /// Represents the name of the UI element that serves as the settings button.
@@ -45,13 +60,18 @@ namespace NoC.Studios.GeoPhysX
         /// Represents the default volume level for sound effects (SFX) in the game.
         /// </summary>
         const float k_defaultValue_SFX = k_maxVolume;
-        
+
         /// <summary>
         /// Enumerates the different scenes within the game.
         /// Each scene represents a distinct user interface or game state managed by the GameManager.
         /// </summary>
-        enum GameScenes { Title = 0, SettingsMenu = 1 }
-        
+        enum GameScenes
+        {
+            Title = 0,
+            SettingsMenu = 1,
+            Game = 2
+        }
+
         /// <summary>
         /// Defines the types of release builds for the game.
         /// Detailed to separate between development builds and production releases.
@@ -80,7 +100,15 @@ namespace NoC.Studios.GeoPhysX
         /// </summary>
         public static GameManager Instance { get; private set; }
 
+        /// <summary>
+        /// Retrieves the current volume level for the background music (BGM) in the game.
+        /// The volume level is typically a float value between 0.0 (muted) and 1.0 (full volume).
+        /// </summary>
         public float Volume_BGM => m_volumeLevel_BGM;
+
+        /// <summary>
+        /// Gets the current volume level for sound effects (SFX) in the game.
+        /// </summary>
         public float Volume_SFX => m_volumeLevel_SFX;
 
         /// <summary>
@@ -112,8 +140,7 @@ namespace NoC.Studios.GeoPhysX
         /// </summary>
         public void StartGame()
         {
-            //TODO: Implement
-            RefreshVersionText();
+            SceneManager.LoadScene((int)GameScenes.Game);
         }
 
         /// <summary>
@@ -142,6 +169,7 @@ namespace NoC.Studios.GeoPhysX
         {
             m_volumeLevel_BGM = volumeLevel;
             //TODO: Implement
+            // - set volume with SetVolume(...)
         }
 
         /// <summary>
@@ -152,6 +180,7 @@ namespace NoC.Studios.GeoPhysX
         {
             m_volumeLevel_SFX = volumeLevel;
             //TODO: Implement
+            // - set volume with SetVolume(...)
         }
 
         /// <summary>
