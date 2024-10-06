@@ -2298,8 +2298,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_backToMenuButton: {fileID: 1385949767}
-  m_volumeSlider_BGM: {fileID: 0}
-  m_volumeSlider_SFX: {fileID: 0}
+  m_volumeSlider_BGM: {fileID: 548063451}
+  m_volumeSlider_SFX: {fileID: 1654264914}
 --- !u!1 &2113445851
 GameObject:
   m_ObjectHideFlags: 0
