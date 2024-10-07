@@ -115,6 +115,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1971959482439195166}
+  - component: {fileID: 133181861134804693}
+  - component: {fileID: 2305401580935572695}
   m_Layer: 0
   m_Name: GameBoard
   m_TagString: Untagged
@@ -138,6 +140,44 @@ Transform:
   - {fileID: 8310492242909919351}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &133181861134804693
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2386911432950011600}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 32.34764, y: 19.464512, z: 11.836547}
+  m_Center: {x: -3.632052, y: -0.14425278, z: -0.15824842}
+--- !u!114 &2305401580935572695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2386911432950011600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3010456c889166646844844d86a355e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_piecesInPlay: 0
+  m_cubesInPlay: 0
+  m_cylindersInPlay: 0
+  m_capsuleInPlay: 0
+  m_spheresInPlay: 0
 --- !u!1 &3448379557878018701
 GameObject:
   m_ObjectHideFlags: 0
@@ -201,8 +241,8 @@ Transform:
   m_GameObject: {fileID: 6658383813575825074}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -9.5, z: 0}
-  m_LocalScale: {x: 37, y: 1, z: 3}
+  m_LocalPosition: {x: -3.5, y: -9.5, z: 0}
+  m_LocalScale: {x: 30, y: 1, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8310492242909919351}
@@ -411,7 +451,7 @@ Transform:
   m_GameObject: {fileID: 9069872281499077373}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 19, y: 0, z: 0}
+  m_LocalPosition: {x: 12, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 20, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []

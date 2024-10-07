@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8794408548830262677}
   - component: {fileID: 1673040159100779124}
   - component: {fileID: 10125507935332244}
-  - component: {fileID: 3319422120594932472}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -84,29 +83,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &3319422120594932472
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6441997272971402710}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &8815317352774471668
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -119,6 +95,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CapsuleGamePiece Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 4133441850773044716, guid: 284638bfbb8360d499b7cbdfd7ee3614,
+        type: 3}
+      propertyPath: m_pieceShape
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6411139360807036152, guid: 284638bfbb8360d499b7cbdfd7ee3614,
         type: 3}
@@ -170,14 +151,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 430223730313666916, guid: 284638bfbb8360d499b7cbdfd7ee3614, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 8758445853498503604, guid: 284638bfbb8360d499b7cbdfd7ee3614,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 8794408548830262677}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1949983358055747622, guid: 284638bfbb8360d499b7cbdfd7ee3614,
+        type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 938505565447782143}
   m_SourcePrefab: {fileID: 100100000, guid: 284638bfbb8360d499b7cbdfd7ee3614, type: 3}
 --- !u!4 &277548020335181376 stripped
 Transform:
@@ -185,3 +171,32 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 8815317352774471668}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7014910458006314962 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1949983358055747622, guid: 284638bfbb8360d499b7cbdfd7ee3614,
+    type: 3}
+  m_PrefabInstance: {fileID: 8815317352774471668}
+  m_PrefabAsset: {fileID: 0}
+--- !u!136 &938505565447782143
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7014910458006314962}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
