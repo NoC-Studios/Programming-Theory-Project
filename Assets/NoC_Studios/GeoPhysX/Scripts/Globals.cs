@@ -9,5 +9,10 @@ namespace NoC.Studios.GeoPhysX
         /// The tag used to identify game piece objects.
         /// </summary>
         public const string k_gamePieceTag = "GamePiece";
+
+        /// <summary>
+        /// The tag used to identify game board objects.
+        /// </summary>
+        public const string k_gameBoardTag = "GameBoard";
     }
 }

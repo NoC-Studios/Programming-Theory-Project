@@ -99,7 +99,7 @@ PrefabInstance:
     - target: {fileID: 4133441850773044716, guid: 284638bfbb8360d499b7cbdfd7ee3614,
         type: 3}
       propertyPath: m_pieceShape
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6411139360807036152, guid: 284638bfbb8360d499b7cbdfd7ee3614,
         type: 3}
