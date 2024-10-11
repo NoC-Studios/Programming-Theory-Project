@@ -48,11 +48,17 @@ namespace NoC.Studios.GeoPhysX
                     m_spherePieceCounter.text = $"{k_spheresInPlayHeader} {m_gameBoard.SpheresInPlay}";
                     break;
                 case GamePiece.PieceShape.None:
-                    m_totalPieceCounter.text = $"{k_totalPiecesInPlayHeader} {m_gameBoard.PiecesInPlay}";
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(pieceShape), pieceShape, null);
             }
+
+            RefreshTotalCount();
+        }
+
+        void RefreshTotalCount()
+        {
+            m_totalPieceCounter.text = $"{k_totalPiecesInPlayHeader} {m_gameBoard.PiecesInPlay}";
         }
     }
 }

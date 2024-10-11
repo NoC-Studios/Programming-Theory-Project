@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace NoC.Studios.GeoPhysX
@@ -6,6 +5,8 @@ namespace NoC.Studios.GeoPhysX
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] float m_moveSpeed = 30f;
+        [SerializeField] Transform m_gamePieceSpawnPoint;
+        
         Rigidbody m_rigidBody;
 
         void Start()

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace NoC.Studios.GeoPhysX
@@ -13,151 +14,90 @@ namespace NoC.Studios.GeoPhysX
     /// </remarks>
     public class GameBoard : MonoBehaviour
     {
+        /// <summary>
+        /// Handles the game's user interface components and updates based on game activity.
+        /// </summary>
         [SerializeField] GameUIManager m_gameUIManager;
 
         /// <summary>
-        /// Represents the number of game pieces currently in play on the GameBoard.
+        /// Contains a list of GamePiece objects that are currently available for play on the GameBoard.
         /// </summary>
-        private uint m_piecesInPlay;
+        [SerializeField] List<GamePiece> m_playablePieces;
 
         /// <summary>
-        /// Denotes the current count of cubes that are active within the game environment.
+        /// Constant used to increment game piece count.
         /// </summary>
-        private uint m_cubesInPlay;
+        const int k_addOne = 1;
 
         /// <summary>
-        /// Represents the number of cylinders currently active on the GameBoard.
+        /// Constant used to decrement game piece count.
         /// </summary>
-        private uint m_cylindersInPlay;
+        const int k_minusOne = -1;
 
         /// <summary>
-        /// Indicates the presence of the capsule in play within the game environment.
+        /// Represents the BoxCollider component attached to the GameBoard, used to detect and handle collisions within the game environment.
         /// </summary>
-        private uint m_capsuleInPlay;
+        BoxCollider m_boxCollider;
 
         /// <summary>
-        /// Tracks the current number of active spheres within the game environment.
+        /// Maintains a list of game pieces currently active on the game board.
         /// </summary>
-        private uint m_spheresInPlay;
-
-        private BoxCollider boxCollider;
-        private List<GameObject> gamePiecesInPlay;
+        HashSet<GamePiece> m_gamePiecesInPlay;
 
         /// <summary>
         /// Gets the number of game pieces currently in play on the GameBoard.
         /// </summary>
-        public uint PiecesInPlay => m_piecesInPlay;
+        public int PiecesInPlay => m_gamePiecesInPlay.Count;
 
         /// <summary>
         /// Denotes the current count of cubes that are active within the game environment.
         /// </summary>
-        public uint CubesInPlay => m_cubesInPlay;
+        public int CubesInPlay => m_gamePiecesInPlay.Count(gamePiece => gamePiece.Shape == GamePiece.PieceShape.Cube);
 
         /// <summary>
         /// Represents the number of cylinders currently active on the GameBoard.
         /// </summary>
-        public uint CylindersInPlay => m_cylindersInPlay;
+        public int CylindersInPlay => m_gamePiecesInPlay.Count(gamePiece => gamePiece.Shape == GamePiece.PieceShape.Cylinder);
 
         /// <summary>
         /// Indicates the presence of the capsules in play within the game environment.
         /// </summary>
-        public uint CapsulesInPlay => m_capsuleInPlay;
+        public int CapsulesInPlay => m_gamePiecesInPlay.Count(gamePiece => gamePiece.Shape == GamePiece.PieceShape.Capsule);
 
         /// <summary>
         /// Tracks the current number of active spheres within the game environment.
         /// </summary>
-        public uint SpheresInPlay => m_spheresInPlay;
+        public int SpheresInPlay => m_gamePiecesInPlay.Count(gamePiece => gamePiece.Shape == GamePiece.PieceShape.Sphere);
 
         void Start()
         {
-            boxCollider = GetComponent<BoxCollider>();
-            if (boxCollider == null)
+            m_boxCollider = GetComponent<BoxCollider>();
+            if (m_boxCollider == null)
             {
                 Debug.LogError("BoxCollider component missing from GameBoard.");
                 enabled = false;
                 return;
             }
 
-            gamePiecesInPlay = new List<GameObject>();
+            m_gamePiecesInPlay = new HashSet<GamePiece>();
         }
 
-        void Update()
+        void OnTriggerEnter(Collider other)
         {
-            MonitorGamePieces();
+            if (!other.CompareTag("GamePiece")) return;
+            RegisterGamePiece(other.gameObject.GetComponent<GamePiece>());
         }
 
-        void MonitorGamePieces()
+        void RegisterGamePiece(GamePiece piece)
         {
-            List<GameObject> currentGamePieces = new List<GameObject>(gamePiecesInPlay);
-
-            foreach (var piece in currentGamePieces)
-            {
-                if (piece == null || !IsWithinBounds(piece))
-                {
-                    UnregisterGamePiece(piece);
-                }
-            }
-
-            m_gameUIManager.UpdateGamePieceCounter(GamePiece.PieceShape.Cube);
-            m_gameUIManager.UpdateGamePieceCounter(GamePiece.PieceShape.Cylinder);
-            m_gameUIManager.UpdateGamePieceCounter(GamePiece.PieceShape.Capsule);
-            m_gameUIManager.UpdateGamePieceCounter(GamePiece.PieceShape.Sphere);
-            m_gameUIManager.UpdateGamePieceCounter(GamePiece.PieceShape.None);
+            if (!m_gamePiecesInPlay.Add(piece)) return;
+            m_gameUIManager.UpdateGamePieceCounter(piece.Shape);
         }
 
-        bool IsWithinBounds(GameObject piece)
+        void UnregisterGamePiece(GamePiece piece)
         {
-            return boxCollider.bounds.Contains(piece.transform.position);
-        }
-
-        public void RegisterGamePiece(GameObject piece)
-        {
-            if (!gamePiecesInPlay.Contains(piece))
-            {
-                gamePiecesInPlay.Add(piece);
-                GamePiece gamePiece = piece.GetComponent<GamePiece>();
-                UpdatePieceCount(gamePiece, 1);
-            }
-        }
-
-        public void UnregisterGamePiece(GameObject piece)
-        {
-            if (gamePiecesInPlay.Contains(piece))
-            {
-                gamePiecesInPlay.Remove(piece);
-                GamePiece gamePiece = piece.GetComponent<GamePiece>();
-                UpdatePieceCount(gamePiece, -1);
-            }
-        }
-
-        private void UpdatePieceCount(GamePiece gamePiece, int value = 0)
-        {
-            switch (gamePiece.Shape)
-            {
-                case GamePiece.PieceShape.Cube:
-                    m_cubesInPlay = (uint)((int)m_cubesInPlay + value);
-                    break;
-                case GamePiece.PieceShape.Cylinder:
-                    m_cylindersInPlay = (uint)((int)m_cylindersInPlay + value);
-                    break;
-                case GamePiece.PieceShape.Capsule:
-                    m_capsuleInPlay = (uint)((int)m_capsuleInPlay + value);
-                    break;
-                case GamePiece.PieceShape.Sphere:
-                    m_spheresInPlay = (uint)((int)m_spheresInPlay + value);
-                    break;
-                case GamePiece.PieceShape.None:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            RefreshTotalCount();
-        }
-
-        void RefreshTotalCount()
-        {
-            m_piecesInPlay = m_cubesInPlay + m_cylindersInPlay + m_capsuleInPlay + m_spheresInPlay;
+            if (!m_gamePiecesInPlay.Remove(piece)) return;
+            m_gameUIManager.UpdateGamePieceCounter(piece.Shape);
         }
     }
 }

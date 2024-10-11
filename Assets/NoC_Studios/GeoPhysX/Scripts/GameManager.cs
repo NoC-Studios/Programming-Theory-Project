@@ -21,11 +21,6 @@ namespace NoC.Studios.GeoPhysX
         const string k_versionTextName = "VersionText";
 
         /// <summary>
-        /// Represents the name of the UI button element that navigates the user back to the title screen.
-        /// </summary>
-        public const string k_returnToTitleButtonName = "ReturnToTitleButton";
-
-        /// <summary>
         /// Represents the name of the UI element that triggers starting the game.
         /// </summary>
         public const string k_playGameButton = "PlayButton";
