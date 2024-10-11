@@ -36,9 +36,9 @@ namespace NoC.Studios.GeoPhysX
         const string k_totalPiecesInPlayHeader = "Total: ";
 
         /// <summary>
-        /// Placeholder text used to indicate that no shape is currently selected or available.
+        /// Placeholder text used to indicate that nothing is currently selected or available.
         /// </summary>
-        const string k_noShape = "   ";
+        const string k_noResult = "   ";
 
         /// <summary>
         /// Name used to represent the capsule shape in the game UI.
@@ -59,6 +59,21 @@ namespace NoC.Studios.GeoPhysX
         /// The display name for the spherical game piece shape in the game's UI.
         /// </summary>
         const string k_sphereShapeName = "Sphere";
+
+        /// <summary>
+        /// The name of the color "Red" used to label or reference red-colored elements in the game UI.
+        /// </summary>
+        const string k_redColorName = "Red";
+
+        /// <summary>
+        /// Name of the color blue used in the game's user interface.
+        /// </summary>
+        const string k_blueColorName = "Blue";
+
+        /// <summary>
+        /// The name associated with the 'Green' color for game piece displays in the user interface.
+        /// </summary>
+        const string k_greenColorName = "Green";
 
         /// <summary>
         /// Reference to the GameBoard instance, which manages and tracks the state of game pieces on the board.
@@ -95,6 +110,11 @@ namespace NoC.Studios.GeoPhysX
         /// be introduced in the game.
         /// </summary>
         [SerializeField] TextMeshProUGUI m_nextShape;
+
+        /// <summary>
+        /// UI element that displays the color of the next game piece to be introduced in the game.
+        /// </summary>
+        [SerializeField] TextMeshProUGUI m_nextColor;
 
         /// <summary>
         /// Button that navigates the user back to the game's title screen.
@@ -150,26 +170,31 @@ namespace NoC.Studios.GeoPhysX
         /// <param name="pieceShape">The shape of the game piece to be displayed in the UI.</param>
         public void UpdateNextShape(GamePiece.PieceShape pieceShape)
         {
-            switch (pieceShape)
+            m_nextShape.text = pieceShape switch
             {
-                case GamePiece.PieceShape.None:
-                    m_nextShape.text = $"{k_noShape}";
-                    break;
-                case GamePiece.PieceShape.Cube:
-                    m_nextShape.text = $"{k_cubeShapeName}";
-                    break;
-                case GamePiece.PieceShape.Cylinder:
-                    m_nextShape.text = $"{k_cylinderShapeName}";
-                    break;
-                case GamePiece.PieceShape.Capsule:
-                    m_nextShape.text = $"{k_capsuleShapeName}";
-                    break;
-                case GamePiece.PieceShape.Sphere:
-                    m_nextShape.text = $"{k_sphereShapeName}";
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(pieceShape), pieceShape, null);
-            }
+                GamePiece.PieceShape.None => $"{k_noResult}",
+                GamePiece.PieceShape.Cube => $"{k_cubeShapeName}",
+                GamePiece.PieceShape.Cylinder => $"{k_cylinderShapeName}",
+                GamePiece.PieceShape.Capsule => $"{k_capsuleShapeName}",
+                GamePiece.PieceShape.Sphere => $"{k_sphereShapeName}",
+                _ => throw new ArgumentOutOfRangeException(nameof(pieceShape), pieceShape, null)
+            };
+        }
+
+        /// <summary>
+        /// Updates the UI element to display the color of the next game piece based on the provided <paramref name="pieceColor"/>.
+        /// </summary>
+        /// <param name="pieceColor">The color of the next game piece to be displayed.</param>
+        public void UpdateNextColor(GamePiece.PieceColor pieceColor)
+        {
+            m_nextColor.text = pieceColor switch
+            {
+                GamePiece.PieceColor.None => $"{k_noResult}",
+                GamePiece.PieceColor.Red => $"{k_redColorName}",
+                GamePiece.PieceColor.Green => $"{k_greenColorName}",
+                GamePiece.PieceColor.Blue => $"{k_blueColorName}",
+                _ => throw new ArgumentOutOfRangeException(nameof(pieceColor), pieceColor, null)
+            };
         }
 
         /// <summary>
