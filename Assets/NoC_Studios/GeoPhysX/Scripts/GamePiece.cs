@@ -51,19 +51,13 @@ namespace NoC.Studios.GeoPhysX
         /// Gets the current shape of the game piece as defined by the PieceShape enum.
         /// This property provides a way to retrieve the shape information of a game piece.
         /// </summary>
-        public PieceShape Shape
-        {
-            get { return m_pieceShape; }
-        }
+        public PieceShape Shape => m_pieceShape;
 
         /// <summary>
         /// The color of the game piece. This property retrieves the PieceColor enum value
         /// that determines the specific color of the game piece within the game environment.
         /// </summary>
-        public PieceColor Color
-        {
-            get { return m_pieceColor; }
-        }
+        public PieceColor Color => m_pieceColor;
 
         /// <summary>
         /// Sets the color of the game piece based on the specified material.
