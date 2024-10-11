@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace NoC.Studios.GeoPhysX
 {
+    /// <summary>
+    /// Represents a game piece in the game environment.
+    /// </summary>
     public class GamePiece : MonoBehaviour
     {
         /// <summary>

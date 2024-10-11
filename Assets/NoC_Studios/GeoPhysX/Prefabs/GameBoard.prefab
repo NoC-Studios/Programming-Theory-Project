@@ -175,10 +175,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_gameUIManager: {fileID: 0}
   m_playablePieces:
-  - {fileID: 4830852890383544856, guid: c49ba9117d506ec4cad2edca3fd453f5, type: 3}
-  - {fileID: 4191164718486348223, guid: 5461eb3b8d9e5244a91f2f74594e9ebf, type: 3}
-  - {fileID: 4451874136302792479, guid: 2e2b19d15e26c144990af26908fc39f9, type: 3}
-  - {fileID: 7318080899188529015, guid: 5888535670e4f454380789565c422066, type: 3}
+  - {fileID: 7014910458006314962, guid: c49ba9117d506ec4cad2edca3fd453f5, type: 3}
+  - {fileID: 1763536274152361077, guid: 5461eb3b8d9e5244a91f2f74594e9ebf, type: 3}
+  - {fileID: 2277536144076489429, guid: 2e2b19d15e26c144990af26908fc39f9, type: 3}
+  - {fileID: 5178118334829132477, guid: 5888535670e4f454380789565c422066, type: 3}
 --- !u!1 &3415355169193824818
 GameObject:
   m_ObjectHideFlags: 0
