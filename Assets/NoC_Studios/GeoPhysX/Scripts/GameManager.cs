@@ -117,6 +117,16 @@ namespace NoC.Studios.GeoPhysX
         public string PlayerName => m_playerName;
 
         /// <summary>
+        /// The audio source that handles the background music (BGM) in the game.
+        /// </summary>
+        [SerializeField] AudioSource m_audioSourceBGM;
+
+        /// <summary>
+        /// Represents the audio source component responsible for playing sound effects in the game.
+        /// </summary>
+        [SerializeField] AudioSource m_audioSourceSFX;
+
+        /// <summary>
         /// Initializes the GameManager instance if it does not already exist.
         /// Ensures that the GameManager object persists across scene loads.
         /// </summary>
@@ -137,6 +147,8 @@ namespace NoC.Studios.GeoPhysX
         /// </summary>
         void Start()
         {
+            SetVolume_BGM(m_volumeLevel_BGM);
+            SetVolume_SFX(m_volumeLevel_SFX);
             RefreshVersionText();
         }
 
@@ -173,8 +185,7 @@ namespace NoC.Studios.GeoPhysX
         public void SetVolume_BGM(float volumeLevel)
         {
             m_volumeLevel_BGM = volumeLevel;
-            //TODO: Implement
-            // - set volume with SetVolume(...)
+            SetVolume(m_audioSourceBGM, m_volumeLevel_BGM);
         }
 
         /// <summary>
@@ -184,8 +195,7 @@ namespace NoC.Studios.GeoPhysX
         public void SetVolume_SFX(float volumeLevel)
         {
             m_volumeLevel_SFX = volumeLevel;
-            //TODO: Implement
-            // - set volume with SetVolume(...)
+            SetVolume(m_audioSourceSFX, m_volumeLevel_SFX);
         }
 
         /// <summary>
