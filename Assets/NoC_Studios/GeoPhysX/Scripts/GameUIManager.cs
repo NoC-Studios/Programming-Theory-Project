@@ -80,6 +80,9 @@ namespace NoC.Studios.GeoPhysX
         /// </summary>
         [SerializeField] GameBoard m_gameBoard;
 
+        [SerializeField] TextMeshProUGUI m_playerName;
+        [SerializeField] TextMeshProUGUI m_playerScoreCounter;
+
         /// <summary>
         /// UI element displaying the count of capsule-shaped game pieces currently in play.
         /// </summary>
@@ -133,6 +136,28 @@ namespace NoC.Studios.GeoPhysX
         }
 
         /// <summary>
+        /// Updates the player's name in the UI.
+        /// This method sets the text of the m_playerName TextMeshProUGUI element to the provided player name.
+        /// </summary>
+        /// <param name="playerName">The new name of the player to be displayed in the UI.</param>
+        public void UpdatePlayerName(string playerName)
+        {
+            m_playerName.text = playerName;
+        }
+
+        /// <summary>
+        /// Updates the player's score displayed in the UI.
+        /// This method sets the text of the m_playerScoreCounter TextMeshProUGUI element to the provided score
+        /// prefixed with the "Score: " label.
+        /// </summary>
+        /// <param name="score">The latest score of the player to be displayed in the UI.</param>
+        public void UpdatePlayerScore(int score)
+        {
+            const string k_scoreHeader = "Score: ";
+            m_playerScoreCounter.text = $"{k_scoreHeader} {score}";
+        }
+
+    /// <summary>
         /// Updates the UI counter for the given game piece shape.
         /// This method adjusts the text value of the corresponding piece counter based on the current
         /// count of that piece shape in play and refreshes the total count.

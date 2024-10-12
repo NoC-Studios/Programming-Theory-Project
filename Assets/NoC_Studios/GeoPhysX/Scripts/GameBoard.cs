@@ -75,9 +75,10 @@ namespace NoC.Studios.GeoPhysX
         /// </summary>
         void Start()
         {
-            m_score = 0;
-            m_nextGamePiece = GetNextGamePiece();
             m_gamePiecesInPlay = new HashSet<GamePiece>();
+            ResetScore();
+            SetPlayerName(GameManager.Instance.PlayerName);
+            m_nextGamePiece = GetNextGamePiece();
         }
 
         /// <summary>
@@ -86,6 +87,8 @@ namespace NoC.Studios.GeoPhysX
         /// </summary>
         void Update()
         {
+            if (m_gamePiecesInPlay == null || !m_gamePiecesInPlay.Any()) return;
+            
             foreach (var piece in m_gamePiecesInPlay.ToList())
             {
                 CheckForMatches(piece);
@@ -229,7 +232,34 @@ namespace NoC.Studios.GeoPhysX
                 RemoveGamePiece(piece);
             }
 
-            m_score += matchingCount;
+            UpdateScore(matchingCount);
+        }
+
+        /// <summary>
+        /// Sets the player's name and updates the game UI to reflect the new name.
+        /// </summary>
+        /// <param name="playerName">The name of the player to display in the game UI.</param>
+        void SetPlayerName(string playerName)
+        {
+            m_gameUIManager.UpdatePlayerName(playerName);
+        }
+
+        /// <summary>
+        /// Updates the player's score by adding the specified amount and refreshes the score display.
+        /// </summary>
+        /// <param name="scoreAmountToAdd">The amount to add to the current score.</param>
+        void UpdateScore(int scoreAmountToAdd)
+        {
+            m_score += scoreAmountToAdd;
+            m_gameUIManager.UpdatePlayerScore(m_score);
+        }
+        
+        /// <summary>
+        /// Resets the player's score to zero.
+        /// </summary>
+        void ResetScore()
+        {
+            m_score = 0;
         }
 
         /// <summary>

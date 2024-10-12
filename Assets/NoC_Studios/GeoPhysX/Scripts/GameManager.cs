@@ -88,7 +88,12 @@ namespace NoC.Studios.GeoPhysX
         /// Holds the current volume level for sound effects (SFX) in the game.
         /// </summary>
         float m_volumeLevel_SFX = k_defaultValue_SFX;
-        
+
+        /// <summary>
+        /// Stores the name of the player.
+        /// </summary>
+        string m_playerName;
+
         /// <summary>
         /// Provides a singleton instance of the GameManager.
         /// Ensures only one instance of GameManager exists during the application lifecycle.
@@ -105,6 +110,11 @@ namespace NoC.Studios.GeoPhysX
         /// Gets the current volume level for sound effects (SFX) in the game.
         /// </summary>
         public float Volume_SFX => m_volumeLevel_SFX;
+
+        /// <summary>
+        /// Gets the player's name in the game.
+        /// </summary>
+        public string PlayerName => m_playerName;
 
         /// <summary>
         /// Initializes the GameManager instance if it does not already exist.
@@ -186,6 +196,15 @@ namespace NoC.Studios.GeoPhysX
         void SetVolume(AudioSource source, float volumeLevel)
         {
             source.volume = volumeLevel;
+        }
+
+        /// <summary>
+        /// Sets the name of the player.
+        /// </summary>
+        /// <param name="playerName">The name to be assigned to the player.</param>
+        public void SetPlayerName(string playerName)
+        {
+            m_playerName = playerName;
         }
 
         /// <summary>

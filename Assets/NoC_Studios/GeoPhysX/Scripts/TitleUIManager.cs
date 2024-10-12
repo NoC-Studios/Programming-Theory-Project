@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,8 @@ namespace NoC.Studios.GeoPhysX
     /// </remarks>
     public class TitleUIManager : MonoBehaviour
     {
+        [SerializeField] TextMeshProUGUI m_playerNameInput;
+        
         /// <summary>
         /// Initializes the TitleUIManager by setting up button listeners and refreshing the version text.
         /// </summary>
@@ -24,16 +27,22 @@ namespace NoC.Studios.GeoPhysX
         /// </remarks>
         void Start()
         {
-            Button playGameButton = GameObject.Find(GameManager.k_playGameButton).GetComponent<Button>();
-            playGameButton.onClick.AddListener(GameManager.Instance.StartGame);
+            var playGameButton = GameObject.Find(GameManager.k_playGameButton).GetComponent<Button>();
+            playGameButton.onClick.AddListener(TryStartGame);
             
-            Button settingsMenuButton = GameObject.Find(GameManager.k_settingsButtonName).GetComponent<Button>();
+            var settingsMenuButton = GameObject.Find(GameManager.k_settingsButtonName).GetComponent<Button>();
             settingsMenuButton.onClick.AddListener(GameManager.Instance.LoadSettingsScreen);
 
-            Button quitMenuButton = GameObject.Find(GameManager.k_quitButtonName).GetComponent<Button>();
+            var quitMenuButton = GameObject.Find(GameManager.k_quitButtonName).GetComponent<Button>();
             quitMenuButton.onClick.AddListener(GameManager.Instance.QuitGame);
             
             GameManager.Instance.RefreshVersionText();
+        }
+
+        void TryStartGame()
+        {
+            GameManager.Instance.SetPlayerName(m_playerNameInput.text);
+            GameManager.Instance.StartGame();
         }
     }
 }
