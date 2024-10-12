@@ -80,7 +80,14 @@ namespace NoC.Studios.GeoPhysX
         /// </summary>
         [SerializeField] GameBoard m_gameBoard;
 
+        /// <summary>
+        /// TextMeshProUGUI element displaying the player's name on the game UI.
+        /// </summary>
         [SerializeField] TextMeshProUGUI m_playerName;
+
+        /// <summary>
+        /// UI element for displaying the player's current score.
+        /// </summary>
         [SerializeField] TextMeshProUGUI m_playerScoreCounter;
 
         /// <summary>

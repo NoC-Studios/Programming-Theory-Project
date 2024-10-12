@@ -15,6 +15,14 @@ namespace NoC.Studios.GeoPhysX
     /// </remarks>
     public class TitleUIManager : MonoBehaviour
     {
+        /// <summary>
+        /// Represents the input field UI element for the player to enter their name
+        /// in the title scene of the game.
+        /// </summary>
+        /// <remarks>
+        /// This variable should be assigned via the Unity Inspector to a TextMeshProUGUI component
+        /// that serves as the input field for the player's name.
+        /// </remarks>
         [SerializeField] TextMeshProUGUI m_playerNameInput;
         
         /// <summary>
@@ -39,8 +47,18 @@ namespace NoC.Studios.GeoPhysX
             GameManager.Instance.RefreshVersionText();
         }
 
+        /// <summary>
+        /// Attempts to start the game by validating the player's name input.
+        /// </summary>
+        /// <remarks>
+        /// This method is triggered when the play button is clicked. It first validates
+        /// the player's name input. If the input is valid, it sets the player's name and
+        /// initiates the game start process.
+        /// </remarks>
         void TryStartGame()
         {
+            //TODO: Validate name and display error or continue based on if name is valid.
+            
             GameManager.Instance.SetPlayerName(m_playerNameInput.text);
             GameManager.Instance.StartGame();
         }
