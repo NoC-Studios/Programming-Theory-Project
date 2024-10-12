@@ -111,6 +111,7 @@ namespace NoC.Studios.GeoPhysX
         /// </summary>
         public void LoadTitleScreen()
         {
+            GameManager.Instance.PlayClickSound();
             GameManager.Instance.LoadTitleScreen();
         }
     }

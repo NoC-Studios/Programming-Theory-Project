@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace NoC.Studios.GeoPhysX
@@ -72,6 +73,16 @@ namespace NoC.Studios.GeoPhysX
                 k_blueColorMaterialName => PieceColor.Blue,
                 _ => PieceColor.None
             };
+        }
+
+        /// <summary>
+        /// Triggered when the game piece collides with another object.
+        /// Plays a collision sound using the GameManager instance.
+        /// </summary>
+        /// <param name="other">The Collision object that contains information about the collision.</param>
+        void OnCollisionEnter(Collision other)
+        {
+            GameManager.Instance.PlayCollisionSound();
         }
     }
 }

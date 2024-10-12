@@ -39,12 +39,39 @@ namespace NoC.Studios.GeoPhysX
             playGameButton.onClick.AddListener(TryStartGame);
             
             var settingsMenuButton = GameObject.Find(GameManager.k_settingsButtonName).GetComponent<Button>();
-            settingsMenuButton.onClick.AddListener(GameManager.Instance.LoadSettingsScreen);
+            settingsMenuButton.onClick.AddListener(LoadSettings);
 
             var quitMenuButton = GameObject.Find(GameManager.k_quitButtonName).GetComponent<Button>();
-            quitMenuButton.onClick.AddListener(GameManager.Instance.QuitGame);
+            quitMenuButton.onClick.AddListener(QuitGame);
             
             GameManager.Instance.RefreshVersionText();
+        }
+
+        /// <summary>
+        /// Handles the quit game action triggered from the title UI.
+        /// </summary>
+        /// <remarks>
+        /// This method is invoked when the quit game button in the title scene is clicked.
+        /// It plays a click sound and then triggers the game's quit functionality through the GameManager.
+        /// </remarks>
+        void QuitGame()
+        {
+            GameManager.Instance.PlayClickSound();
+            GameManager.Instance.QuitGame();
+        }
+
+        /// <summary>
+        /// Loads the settings screen for the game.
+        /// </summary>
+        /// <remarks>
+        /// This method is assigned as a listener to the settings button in the title scene.
+        /// When invoked, it plays a click sound and then calls the method to display the settings screen.
+        /// Utilizes the GameManager instance to handle the operations.
+        /// </remarks>
+        void LoadSettings()
+        {
+            GameManager.Instance.PlayClickSound();
+            GameManager.Instance.LoadSettingsScreen();
         }
 
         /// <summary>
@@ -57,6 +84,8 @@ namespace NoC.Studios.GeoPhysX
         /// </remarks>
         void TryStartGame()
         {
+            GameManager.Instance.PlayClickSound();
+            
             //TODO: Validate name and display error or continue based on if name is valid.
             
             GameManager.Instance.SetPlayerName(m_playerNameInput.text);

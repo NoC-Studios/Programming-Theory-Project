@@ -137,9 +137,18 @@ namespace NoC.Studios.GeoPhysX
         /// </summary>
         void Start()
         {
-            m_returnToTitleButton.onClick.AddListener(GameManager.Instance.LoadTitleScreen);
+            m_returnToTitleButton.onClick.AddListener(LoadTitleScreen);
 
             GameManager.Instance.RefreshVersionText();
+        }
+
+        /// <summary>
+        /// Loads the title screen of the game by transitioning to the title scene and playing a click sound effect.
+        /// </summary>
+        void LoadTitleScreen()
+        {
+            GameManager.Instance.PlayClickSound();
+            GameManager.Instance.LoadTitleScreen();
         }
 
         /// <summary>
@@ -164,7 +173,7 @@ namespace NoC.Studios.GeoPhysX
             m_playerScoreCounter.text = $"{k_scoreHeader} {score}";
         }
 
-    /// <summary>
+        /// <summary>
         /// Updates the UI counter for the given game piece shape.
         /// This method adjusts the text value of the corresponding piece counter based on the current
         /// count of that piece shape in play and refreshes the total count.

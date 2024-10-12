@@ -103,6 +103,7 @@ namespace NoC.Studios.GeoPhysX
         /// <param name="spawnPosition">The position at which the next game piece will be spawned.</param>
         public void SpawnNextGamePiece(Vector3 spawnPosition)
         {
+            GameManager.Instance.PlayDropSound();
             Instantiate(m_nextGamePiece, spawnPosition, m_nextGamePiece.transform.rotation);
             m_nextGamePiece = GetNextGamePiece();
         }
@@ -125,7 +126,7 @@ namespace NoC.Studios.GeoPhysX
         {
             //TODO: Implement pooling
             //TODO: Add in vfx when destroying a piece
-            //TODO: Add in sfx when destroying a piece 
+            GameManager.Instance.PlayRemoveSound();
             Destroy(gamePiece.gameObject);
         }
 

@@ -1435,7 +1435,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -2281,6 +2281,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_audioSourceBGM: {fileID: 2051559407}
   m_audioSourceSFX: {fileID: 1693881181}
+  m_clickSound: {fileID: 8300000, guid: e277066567527644f99ffaf39eadf39c, type: 3}
+  m_dropPieceSound: {fileID: 8300000, guid: a5a0d3156cdad764c904708ba2c2de25, type: 3}
+  m_pieceCollisionSounds:
+  - {fileID: 8300000, guid: 57edaf1699bfea340b12c81fdd0f6168, type: 3}
+  - {fileID: 8300000, guid: daafa86d64618b241ba53e2cde8f3086, type: 3}
+  m_removePieceSound: {fileID: 8300000, guid: 7ec258ab119df0546a922e23bdf832f4, type: 3}
 --- !u!4 &2033566238
 Transform:
   m_ObjectHideFlags: 0

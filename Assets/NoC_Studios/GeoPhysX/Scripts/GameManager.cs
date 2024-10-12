@@ -2,6 +2,7 @@
 using UnityEditor;
 #endif
 
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
@@ -93,13 +94,43 @@ namespace NoC.Studios.GeoPhysX
         /// Stores the name of the player.
         /// </summary>
         string m_playerName;
+        
+        /// <summary>
+        /// The audio source that handles the background music (BGM) in the game.
+        /// </summary>
+        [SerializeField] AudioSource m_audioSourceBGM;
+
+        /// <summary>
+        /// Represents the audio source component responsible for playing sound effects in the game.
+        /// </summary>
+        [SerializeField] AudioSource m_audioSourceSFX;
+
+        /// <summary>
+        /// Represents the audio clip that plays when a click event is triggered.
+        /// </summary>
+        [SerializeField] AudioClip m_clickSound;
+
+        /// <summary>
+        /// Represents the sound effect played when a game piece is dropped.
+        /// </summary>
+        [SerializeField] AudioClip m_dropPieceSound;
+
+        /// <summary>
+        /// A list of audio clips that are played when pieces collide during the game.
+        /// </summary>
+        [SerializeField] List<AudioClip> m_pieceCollisionSounds;
+
+        /// <summary>
+        /// Represents the audio clip that plays when a game piece is removed.
+        /// </summary>
+        [SerializeField] AudioClip m_removePieceSound;
 
         /// <summary>
         /// Provides a singleton instance of the GameManager.
         /// Ensures only one instance of GameManager exists during the application lifecycle.
         /// </summary>
         public static GameManager Instance { get; private set; }
-
+        
         /// <summary>
         /// Retrieves the current volume level for the background music (BGM) in the game.
         /// The volume level is typically a float value between 0.0 (muted) and 1.0 (full volume).
@@ -117,14 +148,9 @@ namespace NoC.Studios.GeoPhysX
         public string PlayerName => m_playerName;
 
         /// <summary>
-        /// The audio source that handles the background music (BGM) in the game.
+        /// Provides access to the audio source component used for playing sound effects.
         /// </summary>
-        [SerializeField] AudioSource m_audioSourceBGM;
-
-        /// <summary>
-        /// Represents the audio source component responsible for playing sound effects in the game.
-        /// </summary>
-        [SerializeField] AudioSource m_audioSourceSFX;
+        AudioSource AudioSource_SFX => m_audioSourceSFX;
 
         /// <summary>
         /// Initializes the GameManager instance if it does not already exist.
@@ -206,6 +232,41 @@ namespace NoC.Studios.GeoPhysX
         void SetVolume(AudioSource source, float volumeLevel)
         {
             source.volume = volumeLevel;
+        }
+
+        /// <summary>
+        /// Plays the click sound effect using the configured settings for sound effects volume.
+        /// </summary>
+        public void PlayClickSound()
+        {
+            AudioSource_SFX.PlayOneShot(m_clickSound, Volume_SFX);
+        }
+
+        /// <summary>
+        /// Plays the sound effect associated with dropping a game piece.
+        /// </summary>
+        public void PlayDropSound()
+        {
+            AudioSource_SFX.PlayOneShot(m_dropPieceSound, Volume_SFX);
+        }
+
+        /// <summary>
+        /// Plays a random collision sound effect from the list of predefined audio clips.
+        /// The sound effect is played at the current SFX volume level.
+        /// </summary>
+        public void PlayCollisionSound()
+        {
+            var clipIndex = Random.Range(0, m_pieceCollisionSounds.Count);
+            AudioSource_SFX.PlayOneShot(m_pieceCollisionSounds[clipIndex], Volume_SFX);
+        }
+
+        /// <summary>
+        /// Plays the sound effect for when a game piece is removed.
+        /// Uses the configured volume level for sound effects.
+        /// </summary>
+        public void PlayRemoveSound()
+        {
+            AudioSource_SFX.PlayOneShot(m_removePieceSound, Volume_SFX);
         }
 
         /// <summary>
