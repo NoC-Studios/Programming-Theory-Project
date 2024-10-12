@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace NoC.Studios.GeoPhysX
 {
@@ -38,6 +39,11 @@ namespace NoC.Studios.GeoPhysX
         HashSet<GamePiece> m_gamePiecesInPlay;
 
         /// <summary>
+        /// Tracks the player's current score in the game.
+        /// </summary>
+        int m_score;
+
+        /// <summary>
         /// Gets the number of game pieces currently in play on the GameBoard.
         /// </summary>
         public int PiecesInPlay => m_gamePiecesInPlay.Count;
@@ -63,13 +69,27 @@ namespace NoC.Studios.GeoPhysX
         public int SpheresInPlay => m_gamePiecesInPlay.Count(gamePiece => gamePiece.Shape == GamePiece.PieceShape.Sphere);
 
         /// <summary>
-        /// Initializes the GameBoard by setting up the initial next game piece to be spawned
-        /// and creating a new HashSet to keep track of game pieces in play.
+        /// Initializes the GameBoard by setting up the initial game piece to be spawned,
+        /// resetting the score to zero, and creating a new collection to keep track of
+        /// game pieces currently in play.
         /// </summary>
         void Start()
         {
+            m_score = 0;
             m_nextGamePiece = GetNextGamePiece();
             m_gamePiecesInPlay = new HashSet<GamePiece>();
+        }
+
+        /// <summary>
+        /// Updates the game state by iterating through all game pieces currently in play
+        /// and checking each one for matches.
+        /// </summary>
+        void Update()
+        {
+            foreach (var piece in m_gamePiecesInPlay.ToList())
+            {
+                CheckForMatches(piece);
+            }
         }
 
         /// <summary>
@@ -88,7 +108,7 @@ namespace NoC.Studios.GeoPhysX
         /// Removes the specified game piece from the game board.
         /// </summary>
         /// <param name="gamePiece">The game piece to be removed.</param>
-        public void RemoveGamePiece(GamePiece gamePiece)
+        void RemoveGamePiece(GamePiece gamePiece)
         {
             UnregisterGamePiece(gamePiece);
             DestroyGamePiece(gamePiece);
@@ -186,6 +206,76 @@ namespace NoC.Studios.GeoPhysX
         {
             if (!m_gamePiecesInPlay.Remove(piece)) return;
             m_gameUIManager.UpdateGamePieceCounter(piece.Shape);
+        }
+
+        /// <summary>
+        /// Checks if there are any matching game pieces connected to the provided game piece.
+        /// If the number of connected matches meets or exceeds the minimum required count,
+        /// the matching pieces are removed and the score is updated.
+        /// </summary>
+        /// <param name="pieceToCheck">The game piece that needs to be checked for matches.</param>
+        void CheckForMatches(GamePiece pieceToCheck)
+        {
+            const int minimumMatchCount = 3;
+
+            var matchingPieces = new HashSet<GamePiece>();
+            FindMatchingPieces(pieceToCheck, matchingPieces);
+            var matchingCount = matchingPieces.Count;
+            if (matchingCount < minimumMatchCount) return;
+
+            foreach (var piece in matchingPieces)
+            {
+                ExplodePiece(piece);
+                RemoveGamePiece(piece);
+            }
+
+            m_score += matchingCount;
+        }
+
+        /// <summary>
+        /// Applies an explosion force to the nearby game pieces when a specified game piece explodes.
+        /// </summary>
+        /// <param name="pieceToExplode">The game piece that will cause the explosion.</param>
+        static void ExplodePiece(GamePiece pieceToExplode)
+        {
+            const float explosionForce = 5000f;
+            const float explosionRadius = 25f;
+
+            var hitColliders = Physics.OverlapSphere(pieceToExplode.transform.position, 10f);
+            foreach (var hitCollider in hitColliders)
+            {
+                var hitRigidBody = hitCollider.GetComponent<Rigidbody>();
+                if (hitRigidBody != null)
+                {
+                    hitRigidBody.AddExplosionForce(explosionForce, pieceToExplode.transform.position, explosionRadius);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Recursively finds and adds all game pieces that match the shape and color
+        /// of the specified starting game piece within a given radius.
+        /// </summary>
+        /// <param name="startPiece">The initial game piece to start the search from.</param>
+        /// <param name="matchingPieces">A collection to store the matching game pieces found during the search.</param>
+        void FindMatchingPieces(GamePiece startPiece, HashSet<GamePiece> matchingPieces)
+        {
+            if (matchingPieces.Contains(startPiece)) return;
+            
+            const float matchRadius = 1f;
+            
+            matchingPieces.Add(startPiece);
+            var hitColliders = Physics.OverlapSphere(startPiece.transform.position, matchRadius);
+            foreach (var hitCollider in hitColliders)
+            {
+                var otherPiece = hitCollider.GetComponent<GamePiece>();
+                if (otherPiece != null &&
+                    otherPiece.Shape == startPiece.Shape &&
+                    otherPiece.Color == startPiece.Color)
+                {
+                    FindMatchingPieces(otherPiece, matchingPieces);
+                }
+            }
         }
     }
 }
