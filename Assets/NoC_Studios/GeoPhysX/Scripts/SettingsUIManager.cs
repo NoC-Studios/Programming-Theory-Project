@@ -42,7 +42,7 @@ namespace NoC.Studios.GeoPhysX
         void Start()
         {
             RefreshUI();
-            GameManager.Instance.RefreshVersionText();
+            GameManager.RefreshVersionText();
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace NoC.Studios.GeoPhysX
         /// </summary>
         public void SetVolume_BGM()
         {
-            GameManager.Instance.SetVolume_BGM(GetSliderVolmeLevel(SoundOptions.BGM));
+            GameManager.Instance.SetVolume_BGM(GetSliderVolumeLevel(SoundOptions.BGM));
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace NoC.Studios.GeoPhysX
         /// </summary>
         public void SetVolume_SFX()
         {
-            GameManager.Instance.SetVolume_SFX(GetSliderVolmeLevel(SoundOptions.SFX));
+            GameManager.Instance.SetVolume_SFX(GetSliderVolumeLevel(SoundOptions.SFX));
         }
 
         /// <summary>
@@ -66,17 +66,14 @@ namespace NoC.Studios.GeoPhysX
         /// </summary>
         /// <param name="soundOption">The sound option (BGM or SFX) for which the volume level is requested.</param>
         /// <returns>The volume level corresponding to the provided sound option.</returns>
-        float GetVolumeLevel(SoundOptions soundOption)
+        static float GetVolumeLevel(SoundOptions soundOption)
         {
-            switch (soundOption)
+            return soundOption switch
             {
-                case SoundOptions.BGM:
-                    return GameManager.Instance.Volume_BGM;
-                case SoundOptions.SFX:
-                    return GameManager.Instance.Volume_SFX;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(soundOption), soundOption, null);
-            }
+                SoundOptions.BGM => GameManager.Instance.Volume_BGM,
+                SoundOptions.SFX => GameManager.Instance.Volume_SFX,
+                _ => throw new ArgumentOutOfRangeException(nameof(soundOption), soundOption, null)
+            };
         }
 
         /// <summary>
@@ -84,17 +81,14 @@ namespace NoC.Studios.GeoPhysX
         /// </summary>
         /// <param name="soundOption">The type of sound (BGM or SFX) for which the volume level is being retrieved.</param>
         /// <returns>The current value of the specified volume slider.</returns>
-        float GetSliderVolmeLevel(SoundOptions soundOption)
+        float GetSliderVolumeLevel(SoundOptions soundOption)
         {
-            switch (soundOption)
+            return soundOption switch
             {
-                case SoundOptions.BGM:
-                    return m_volumeSlider_BGM.value;
-                case SoundOptions.SFX:
-                    return m_volumeSlider_SFX.value;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(soundOption), soundOption, null);
-            }
+                SoundOptions.BGM => m_volumeSlider_BGM.value,
+                SoundOptions.SFX => m_volumeSlider_SFX.value,
+                _ => throw new ArgumentOutOfRangeException(nameof(soundOption), soundOption, null)
+            };
         }
 
         /// <summary>
@@ -102,8 +96,8 @@ namespace NoC.Studios.GeoPhysX
         /// </summary>
         void RefreshUI()
         {
-                m_volumeSlider_BGM.value = GetVolumeLevel(SoundOptions.BGM);
-                m_volumeSlider_SFX.value = GetVolumeLevel(SoundOptions.SFX);
+            m_volumeSlider_BGM.value = GetVolumeLevel(SoundOptions.BGM);
+            m_volumeSlider_SFX.value = GetVolumeLevel(SoundOptions.SFX);
         }
 
         /// <summary>
@@ -112,7 +106,7 @@ namespace NoC.Studios.GeoPhysX
         public void LoadTitleScreen()
         {
             GameManager.Instance.PlayClickSound();
-            GameManager.Instance.LoadTitleScreen();
+            GameManager.LoadTitleScreen();
         }
     }
 }

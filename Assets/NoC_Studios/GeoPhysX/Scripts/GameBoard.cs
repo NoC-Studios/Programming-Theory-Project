@@ -122,7 +122,7 @@ namespace NoC.Studios.GeoPhysX
         /// Destroys the specified game piece, removing it from the game board and performing related cleanup.
         /// </summary>
         /// <param name="gamePiece">The game piece to be destroyed.</param>
-        void DestroyGamePiece(GamePiece gamePiece)
+        static void DestroyGamePiece(GamePiece gamePiece)
         {
             //TODO: Implement pooling
             //TODO: Add in vfx when destroying a piece
@@ -171,7 +171,7 @@ namespace NoC.Studios.GeoPhysX
         /// <param name="gamePiece">The game piece to which the color will be applied.</param>
         /// <param name="coloredMaterial">The material representing the color to apply.</param>
         /// <return>The game piece with the applied color material.</return>
-        GameObject ApplyColor(GameObject gamePiece, Material coloredMaterial)
+        static GameObject ApplyColor(GameObject gamePiece, Material coloredMaterial)
         {
             gamePiece.GetComponentInChildren<MeshRenderer>().SetMaterials(new List<Material> {coloredMaterial});
             gamePiece.GetComponent<GamePiece>().SetColor(coloredMaterial);
@@ -289,7 +289,7 @@ namespace NoC.Studios.GeoPhysX
         /// </summary>
         /// <param name="startPiece">The initial game piece to start the search from.</param>
         /// <param name="matchingPieces">A collection to store the matching game pieces found during the search.</param>
-        void FindMatchingPieces(GamePiece startPiece, HashSet<GamePiece> matchingPieces)
+        static void FindMatchingPieces(GamePiece startPiece, HashSet<GamePiece> matchingPieces)
         {
             if (matchingPieces.Contains(startPiece)) return;
             

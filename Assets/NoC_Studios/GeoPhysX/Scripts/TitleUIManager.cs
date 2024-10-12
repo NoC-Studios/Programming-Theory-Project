@@ -44,7 +44,7 @@ namespace NoC.Studios.GeoPhysX
             var quitMenuButton = GameObject.Find(GameManager.k_quitButtonName).GetComponent<Button>();
             quitMenuButton.onClick.AddListener(QuitGame);
             
-            GameManager.Instance.RefreshVersionText();
+            GameManager.RefreshVersionText();
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace NoC.Studios.GeoPhysX
         /// This method is invoked when the quit game button in the title scene is clicked.
         /// It plays a click sound and then triggers the game's quit functionality through the GameManager.
         /// </remarks>
-        void QuitGame()
+        static void QuitGame()
         {
             GameManager.Instance.PlayClickSound();
             GameManager.Instance.QuitGame();
@@ -68,10 +68,10 @@ namespace NoC.Studios.GeoPhysX
         /// When invoked, it plays a click sound and then calls the method to display the settings screen.
         /// Utilizes the GameManager instance to handle the operations.
         /// </remarks>
-        void LoadSettings()
+        static void LoadSettings()
         {
             GameManager.Instance.PlayClickSound();
-            GameManager.Instance.LoadSettingsScreen();
+            GameManager.LoadSettingsScreen();
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace NoC.Studios.GeoPhysX
             //TODO: Validate name and display error or continue based on if name is valid.
             
             GameManager.Instance.SetPlayerName(m_playerNameInput.text);
-            GameManager.Instance.StartGame();
+            GameManager.StartGame();
         }
     }
 }

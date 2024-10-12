@@ -181,7 +181,7 @@ namespace NoC.Studios.GeoPhysX
         /// <summary>
         /// Initiates the game start sequence by performing necessary setup.
         /// </summary>
-        public void StartGame()
+        public static void StartGame()
         {
             SceneManager.LoadScene((int)GameScenes.Game);
         }
@@ -190,7 +190,7 @@ namespace NoC.Studios.GeoPhysX
         /// Loads the title screen by switching to the Title scene.
         /// Updates the version text displayed in the user interface.
         /// </summary>
-        public void LoadTitleScreen()
+        public static void LoadTitleScreen()
         {
             SceneManager.LoadScene((int)GameScenes.Title);
         }
@@ -199,7 +199,7 @@ namespace NoC.Studios.GeoPhysX
         /// Loads the settings screen by switching to the SettingsMenu scene.
         /// Updates the version text displayed in the user interface.
         /// </summary>
-        public void LoadSettingsScreen()
+        public static void LoadSettingsScreen()
         {
             SceneManager.LoadScene((int)GameScenes.SettingsMenu);
         }
@@ -229,7 +229,7 @@ namespace NoC.Studios.GeoPhysX
         /// </summary>
         /// <param name="source">The audio source to adjust the volume of.</param>
         /// <param name="volumeLevel">The desired volume level, typically between 0 (muted) and 1 (full volume).</param>
-        void SetVolume(AudioSource source, float volumeLevel)
+        static void SetVolume(AudioSource source, float volumeLevel)
         {
             source.volume = volumeLevel;
         }
@@ -295,13 +295,13 @@ namespace NoC.Studios.GeoPhysX
         /// <summary>
         /// Updates the version text in the UI to reflect the current application version and release type.
         /// </summary>
-        public void RefreshVersionText()
+        public static void RefreshVersionText()
         {
-            GameObject versionLabel = GameObject.Find(k_versionTextName);
+            var versionLabel = GameObject.Find(k_versionTextName);
 
             if (!versionLabel) return;
             
-            TextMeshProUGUI versionText = versionLabel.GetComponent<TextMeshProUGUI>();
+            var versionText = versionLabel.GetComponent<TextMeshProUGUI>();
             versionText.text = $"Version {Application.version} [{m_releaseType.ToString()}]";
         }
     }

@@ -139,7 +139,7 @@ namespace NoC.Studios.GeoPhysX
         {
             m_returnToTitleButton.onClick.AddListener(LoadTitleScreen);
 
-            GameManager.Instance.RefreshVersionText();
+            GameManager.RefreshVersionText();
         }
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace NoC.Studios.GeoPhysX
         void LoadTitleScreen()
         {
             GameManager.Instance.PlayClickSound();
-            GameManager.Instance.LoadTitleScreen();
+            GameManager.LoadTitleScreen();
         }
 
         /// <summary>
