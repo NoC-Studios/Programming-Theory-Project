@@ -3,11 +3,11 @@ using UnityEngine;
 namespace NoC.Studios.GeoPhysX
 {
     /// <summary>
-    /// Controls the behavior of the player in the game.
+    /// Controls the behavior of the player character within the game environment.
     /// </summary>
     /// <remarks>
-    /// This class is responsible for processing player input, handling player movement, and interacting with
-    /// the game environment. It leverages Unity's MonoBehaviour for integrating with the game engine.
+    /// Handles the player's input and movement, interacting with game objects and physics.
+    /// Inherits from UnityEngine.MonoBehaviour to integrate seamlessly with the Unity game engine.
     /// </remarks>
     public class PlayerController : MonoBehaviour
     {
@@ -53,15 +53,22 @@ namespace NoC.Studios.GeoPhysX
         float m_timeSinceLastShot = Nilf;
 
         /// <summary>
+        /// Instance of PlayerDropTimer responsible for managing the drop timer functionality
+        /// associated with the player's actions in the game.
+        /// </summary>
+        PlayerDropTimer m_dropTimer;
+
+        /// <summary>
         /// Called when the script instance is being loaded.
         /// </summary>
         /// <remarks>
-        /// This method is used to perform initialization tasks, such as fetching required components before the game starts.
-        /// In this particular case, it retrieves the Rigidbody component attached to the player game object.
+        /// Suitable for performing initialization tasks, this method ensures that essential components like Rigidbody and
+        /// PlayerDropTimer are retrieved and set up before the game starts.
         /// </remarks>
         void Awake()
         {
             m_rigidBody = GetComponent<Rigidbody>();
+            m_dropTimer = GetComponent<PlayerDropTimer>();
         }
 
         /// <summary>
@@ -76,6 +83,20 @@ namespace NoC.Studios.GeoPhysX
         {
             m_gameBoard = GameObject.Find(nameof(GameBoard)).GetComponent<GameBoard>();
             m_timeSinceLastShot = m_shotTimer;
+            m_dropTimer.OnTimeOut += OnDropTimerTimeout;
+            m_dropTimer.StartTimer();
+        }
+
+        /// <summary>
+        /// Handles the event triggered when the drop timer reaches zero.
+        /// </summary>
+        /// <remarks>
+        /// This method is invoked by the PlayerDropTimer component.
+        /// It calls the DropNextShape method to drop the next shape onto the game board.
+        /// </remarks>
+        void OnDropTimerTimeout()
+        {
+            DropNextShape();
         }
 
         /// <summary>
@@ -129,6 +150,8 @@ namespace NoC.Studios.GeoPhysX
         void DropNextShape()
         {
             m_gameBoard.SpawnNextGamePiece(m_gamePieceSpawnPoint.position);
+            m_dropTimer.ResetTimer();
+            m_dropTimer.StartTimer();
         }
     }
 }
