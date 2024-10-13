@@ -126,12 +126,30 @@ namespace NoC.Studios.GeoPhysX
         /// </summary>
         [SerializeField] TextMeshProUGUI m_nextColor;
 
+        /// <summary>
+        /// Text component to display the current mission or objective in the game UI.
+        /// </summary>
         [SerializeField] TextMeshProUGUI m_missionText;
+
+        /// <summary>
+        /// Text element for displaying the remaining time for the current mission on the game UI.
+        /// </summary>
+        [SerializeField] TextMeshProUGUI m_missionTimerText;
 
         /// <summary>
         /// Button that navigates the user back to the game's title screen.
         /// </summary>
         [SerializeField] Button m_returnToTitleButton;
+
+        /// <summary>
+        /// The UI component that is displayed when the game is over.
+        /// </summary>
+        [SerializeField] GameObject m_gameOverUI;
+
+        /// <summary>
+        /// Button used to trigger the game over actions in the UI.
+        /// </summary>
+        [SerializeField] Button m_gameOverButton;
 
         /// <summary>
         /// Initializes the GameUIManager by setting up UI button listeners and refreshing version text.
@@ -140,6 +158,7 @@ namespace NoC.Studios.GeoPhysX
         void Start()
         {
             m_returnToTitleButton.onClick.AddListener(LoadTitleScreen);
+            m_gameOverButton.onClick.AddListener(LoadTitleScreen);
 
             GameManager.RefreshVersionText();
         }
@@ -257,6 +276,30 @@ namespace NoC.Studios.GeoPhysX
         public void SetMissionText(string missionText)
         {
             m_missionText.text = missionText;
+        }
+
+        /// <summary>
+        /// Updates the mission timer displayed in the UI.
+        /// This method sets the text of the mission timer TextMeshProUGUI element to the provided time left.
+        /// </summary>
+        /// <param name="currentMissionTimeLeft">The current time left for the mission, formatted as float.</param>
+        public void RefreshMissionTimer(float currentMissionTimeLeft)
+        {
+            var minutes = Mathf.FloorToInt(currentMissionTimeLeft / 60);
+            var seconds = Mathf.FloorToInt(currentMissionTimeLeft % 60);
+            m_missionTimerText.text = $"Time Left: {minutes:00}:{seconds:00}";
+        }
+
+        /// <summary>
+        /// Displays or hides the Game Over UI based on the state of the game.
+        /// If the game is over, the Game Over UI is shown and the button to return to the title screen is hidden.
+        /// If the game is not over, the Game Over UI is hidden and the button is shown.
+        /// This method should be called when the game state changes to ensure the UI reflects the current game status.
+        /// </summary>
+        public void ToggleGameOverUI()
+        {
+            m_returnToTitleButton.gameObject.SetActive(!m_gameBoard.IsGameOver);
+            m_gameOverUI.SetActive(m_gameBoard.IsGameOver);
         }
     }
 }

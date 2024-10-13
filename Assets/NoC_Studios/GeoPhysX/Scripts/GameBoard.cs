@@ -51,6 +51,16 @@ namespace NoC.Studios.GeoPhysX
         int m_score;
 
         /// <summary>
+        /// Tracks the remaining time for the current mission.
+        /// </summary>
+        float m_currentMissionTimeLeft;
+
+        /// <summary>
+        /// Indicates whether the game has ended.
+        /// </summary>
+        bool m_isGameOver = false;
+
+        /// <summary>
         /// Gets the number of game pieces currently in play on the GameBoard.
         /// </summary>
         public int PiecesInPlay => m_gamePiecesInPlay.Count;
@@ -76,6 +86,11 @@ namespace NoC.Studios.GeoPhysX
         public int SpheresInPlay => m_gamePiecesInPlay.Count(gamePiece => gamePiece.Shape == GamePiece.PieceShape.Sphere);
 
         /// <summary>
+        /// Gets a value indicating whether the game has ended.
+        /// </summary>
+        public bool IsGameOver => m_isGameOver;
+
+        /// <summary>
         /// Initializes the GameBoard by setting up the initial game piece to be spawned,
         /// resetting the score to zero, and creating a new collection to keep track of
         /// game pieces currently in play.
@@ -91,12 +106,17 @@ namespace NoC.Studios.GeoPhysX
 
         /// <summary>
         /// Updates the game state by iterating through all game pieces currently in play
-        /// and checking each one for matches.
+        /// and checking each one for matches. It also updates the mission timer based on the
+        /// elapsed game time.
         /// </summary>
         void Update()
         {
-            if (m_gamePiecesInPlay == null || !m_gamePiecesInPlay.Any()) return;
+            UpdateMissionTimer(Time.deltaTime);
             
+            if (m_gamePiecesInPlay == null ||
+                !m_gamePiecesInPlay.Any() ||
+                m_isGameOver) return;
+
             foreach (var piece in m_gamePiecesInPlay.ToList())
             {
                 CheckForMatches(piece);
@@ -132,7 +152,6 @@ namespace NoC.Studios.GeoPhysX
         /// <param name="gamePiece">The game piece to be destroyed.</param>
         static void DestroyGamePiece(GamePiece gamePiece)
         {
-            //TODO: Implement pooling
             //TODO: Add in vfx when destroying a piece
             GameManager.Instance.PlayRemoveSound();
             Destroy(gamePiece.gameObject);
@@ -336,15 +355,50 @@ namespace NoC.Studios.GeoPhysX
             var shapeIndex = Random.Range(1, shapeCount);
 
             const int matchCount = 3;
+            const int missionScore = 30;
+            const float missionDuration = 90f;
 
             m_currentMission = new Mission()
             {
                 MatchCount = matchCount,
                 PieceColor = (GamePiece.PieceColor)colorIndex,
-                PieceShape = (GamePiece.PieceShape)shapeIndex
+                PieceShape = (GamePiece.PieceShape)shapeIndex,
+                MissionScore = missionScore,
+                MissionDuration = missionDuration
             };
+
+            SetMissionTimer();
             
             m_gameUIManager.SetMissionText(m_currentMission.ToString());
+        }
+
+        /// <summary>
+        /// Sets the mission timer for the current mission by initializing the time left
+        /// with the mission's duration and updating the UI to reflect this time.
+        /// </summary>
+        void SetMissionTimer()
+        {
+            var missionDuration = m_currentMission.MissionDuration;
+            m_currentMissionTimeLeft = missionDuration;
+            m_gameUIManager.RefreshMissionTimer(m_currentMissionTimeLeft);
+        }
+
+        /// <summary>
+        /// Updates the remaining time for the current mission, ending the game if the timer reaches zero, and updates the mission timer UI.
+        /// </summary>
+        /// <param name="deltaTime">The amount of time that has passed since the last update.</param>
+        void UpdateMissionTimer(float deltaTime)
+        {
+            m_currentMissionTimeLeft -= deltaTime;
+            
+            if (m_currentMissionTimeLeft <= 0f)
+            {
+                m_currentMissionTimeLeft = 0f;
+                m_isGameOver = true;
+                m_gameUIManager.ToggleGameOverUI();
+            }
+
+            m_gameUIManager.RefreshMissionTimer(m_currentMissionTimeLeft);
         }
 
         /// <summary>
@@ -371,8 +425,7 @@ namespace NoC.Studios.GeoPhysX
         /// </summary>
         void CompleteMission()
         {
-            const int missionScore = 30;
-            UpdateScore(missionScore);
+            UpdateScore(m_currentMission.MissionScore);
             GetNextMission();
         }
 
@@ -401,6 +454,16 @@ namespace NoC.Studios.GeoPhysX
             /// This enumeration defines the different shapes that a game piece can assume, which can be used for gameplay mechanics and mission objectives.
             /// </remarks>
             public GamePiece.PieceShape PieceShape;
+
+            /// <summary>
+            /// The score awarded upon completion of the mission objective.
+            /// </summary>
+            public int MissionScore;
+
+            /// <summary>
+            /// Specifies the duration, in seconds, allotted to complete the mission objective.
+            /// </summary>
+            public float MissionDuration;
 
             /// <summary>
             /// Returns a string representation of the mission, including the required match count,

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace NoC.Studios.GeoPhysX
@@ -207,7 +206,7 @@ namespace NoC.Studios.GeoPhysX
                     break;
                 case k_blueColorMaterialName:
                     m_pieceColor = PieceColor.Blue;
-                    m_glowColor = UnityEngine.Color.blue;
+                    m_glowColor = UnityEngine.Color.cyan;
                     break;
                 default:
                     m_pieceColor = PieceColor.None;

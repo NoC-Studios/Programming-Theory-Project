@@ -110,6 +110,12 @@ namespace NoC.Studios.GeoPhysX
         /// </remarks>
         void Update()
         {
+            if (m_gameBoard.IsGameOver)
+            {
+                m_dropTimer.StopTimer();
+                return;
+            }
+
             m_timeSinceLastShot += Time.deltaTime;
             
             if (!Input.GetKeyDown(KeyCode.Space) || !(m_timeSinceLastShot >= m_shotTimer)) return;
