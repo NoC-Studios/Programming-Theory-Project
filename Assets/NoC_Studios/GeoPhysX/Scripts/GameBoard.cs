@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -39,6 +40,12 @@ namespace NoC.Studios.GeoPhysX
         HashSet<GamePiece> m_gamePiecesInPlay;
 
         /// <summary>
+        /// Represents the current mission that needs to be accomplished in the game.
+        /// Stores details such as the count, color, and shape of game pieces required to complete the mission.
+        /// </summary>
+        Mission m_currentMission;
+
+        /// <summary>
         /// Tracks the player's current score in the game.
         /// </summary>
         int m_score;
@@ -78,6 +85,7 @@ namespace NoC.Studios.GeoPhysX
             m_gamePiecesInPlay = new HashSet<GamePiece>();
             ResetScore();
             SetPlayerName(GameManager.Instance.PlayerName);
+            GetNextMission();
             m_nextGamePiece = GetNextGamePiece();
         }
 
@@ -232,8 +240,13 @@ namespace NoC.Studios.GeoPhysX
                 ExplodePiece(piece);
                 RemoveGamePiece(piece);
             }
-
+            
             UpdateScore(matchingCount);
+            
+            var matchingPiece = matchingPieces.First();
+            var matchingShape = matchingPiece.Shape;
+            var matchingColor = matchingPiece.Color;
+            UpdateMission(matchingColor, matchingShape, matchingCount);
         }
 
         /// <summary>
@@ -306,6 +319,99 @@ namespace NoC.Studios.GeoPhysX
                 {
                     FindMatchingPieces(otherPiece, matchingPieces);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Sets a new mission for the game by randomly selecting a game piece color and shape,
+        /// and establishing the required match count. Updates the game UI with the current mission details.
+        /// </summary>
+        void GetNextMission()
+        {
+            var colorCount = Enum.GetValues(typeof(GamePiece.PieceColor)).Length;
+            var shapeCount = Enum.GetValues(typeof(GamePiece.PieceShape)).Length;
+
+            // 0 index is None for color and shape, so start with 1.
+            var colorIndex = Random.Range(1, colorCount);
+            var shapeIndex = Random.Range(1, shapeCount);
+
+            const int matchCount = 3;
+
+            m_currentMission = new Mission()
+            {
+                MatchCount = matchCount,
+                PieceColor = (GamePiece.PieceColor)colorIndex,
+                PieceShape = (GamePiece.PieceShape)shapeIndex
+            };
+            
+            m_gameUIManager.SetMissionText(m_currentMission.ToString());
+        }
+
+        /// <summary>
+        /// Updates the current mission by checking if the provided game piece color, shape,
+        /// and match count meet or exceed the mission's requirements. If the mission's criteria are met,
+        /// the mission is marked as completed.
+        /// </summary>
+        /// <param name="pieceColor">The color of the game pieces that matched.</param>
+        /// <param name="pieceShape">The shape of the game pieces that matched.</param>
+        /// <param name="matchCount">The number of game pieces that matched.</param>
+        void UpdateMission(GamePiece.PieceColor pieceColor, GamePiece.PieceShape pieceShape, int matchCount)
+        {
+            if (m_currentMission.PieceColor == pieceColor &&
+                m_currentMission.PieceShape == pieceShape && 
+                m_currentMission.MatchCount <= matchCount)
+            {
+                CompleteMission();
+            }
+        }
+
+        /// <summary>
+        /// Completes the current mission by awarding a predefined score to the player
+        /// and then initiates a new mission.
+        /// </summary>
+        void CompleteMission()
+        {
+            const int missionScore = 30;
+            UpdateScore(missionScore);
+            GetNextMission();
+        }
+
+        /// <summary>
+        /// Represents a mission objective in the game, specifying the target match count, piece color, and piece shape.
+        /// </summary>
+        /// <remarks>
+        /// The Mission struct is used to define the goals that players need to achieve, which includes the number of pieces, their color, and their shape. This struct helps in managing game objectives dynamically during gameplay.
+        /// </remarks>
+        struct Mission
+        {
+            /// <summary>
+            /// The number of matches required to complete the mission objective.
+            /// </summary>
+            public int MatchCount;
+
+            /// <summary>
+            /// Enum representing the various colors a game piece can take within the game environment.
+            /// </summary>
+            public GamePiece.PieceColor PieceColor;
+
+            /// <summary>
+            /// Represents the shape of a game piece in the game environment.
+            /// </summary>
+            /// <remarks>
+            /// This enumeration defines the different shapes that a game piece can assume, which can be used for gameplay mechanics and mission objectives.
+            /// </remarks>
+            public GamePiece.PieceShape PieceShape;
+
+            /// <summary>
+            /// Returns a string representation of the mission, including the required match count,
+            /// piece color, and piece shape in a readable format.
+            /// </summary>
+            /// <returns>
+            /// A string that describes the mission objective in the format "Clear {MatchCount} {PieceColor} {PieceShape}".
+            /// </returns>
+            public override string ToString()
+            {
+                return $"Clear {MatchCount} {PieceColor} {PieceShape}";
             }
         }
     }

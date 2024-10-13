@@ -126,6 +126,8 @@ namespace NoC.Studios.GeoPhysX
         /// </summary>
         [SerializeField] TextMeshProUGUI m_nextColor;
 
+        [SerializeField] TextMeshProUGUI m_missionText;
+
         /// <summary>
         /// Button that navigates the user back to the game's title screen.
         /// </summary>
@@ -245,6 +247,16 @@ namespace NoC.Studios.GeoPhysX
         void RefreshTotalCount()
         {
             m_totalPieceCounter.text = $"{k_totalPiecesInPlayHeader} {m_gameBoard.PiecesInPlay}";
+        }
+
+        /// <summary>
+        /// Updates the mission text displayed in the UI.
+        /// This method sets the text of the m_missionText TextMeshProUGUI element to the provided mission description.
+        /// </summary>
+        /// <param name="missionText">The new mission text to be displayed in the UI.</param>
+        public void SetMissionText(string missionText)
+        {
+            m_missionText.text = missionText;
         }
     }
 }
